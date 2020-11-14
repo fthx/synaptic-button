@@ -29,15 +29,20 @@ class SynapticIndicator extends PanelMenu.Button {
         this.add_child(this.hbox);
         
         // connect signal
-        this.connect('button-press-event', Lang.bind(this, this._runSynaptic));
+        this.click = this.connect('button-press-event', Lang.bind(this, this._runSynaptic))
 	}
 	
 	_runSynaptic() {
 		try {
-			Util.trySpawnCommandLine("synaptic-pkexec");
+			Util.trySpawnCommandLine("synaptic-pkexec")
 		} catch(err) {
-			Main.notify("Error: unable to run Synaptic");
+			Main.notify("Error: unable to run Synaptic")
 		}
+	}
+	
+	destroy() {
+		this.disconnect(this.click);
+		super.destroy()
 	}
 })
 
@@ -48,9 +53,9 @@ var _indicator;
 
 function enable() {
     _indicator = new SynapticIndicator();
-    Main.panel.addToStatusArea('synaptic-indicator', _indicator);
+    Main.panel.addToStatusArea('synaptic-indicator', _indicator)
 }
 
 function disable() {
-    _indicator.destroy();
+    _indicator.destroy()
 }
